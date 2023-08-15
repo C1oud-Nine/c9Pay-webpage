@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>/users/loginform2.jsp</title>
+    <link rel="stylesheet" href="css/styles.css" />
+    <style>
+        html,
+        body {
+            height: 100%;
+        }
+        body {
+            display: flex;
+            align-items: center;
+            padding-top: 40px;
+            padding-bottom: 40px;
+        }
+        .form-signin {
+            border: gainsboro solid 0.5px;
+            width: 100%;
+            max-width: 33rem;
+            padding: 5rem;
+            margin: auto;
+        }
+
+        .form-signin .checkbox {
+            font-weight: 500;
+        }
+
+        .form-signin .form-floating:focus-within {
+            z-index: 2;
+        }
+
+        .form-signin input[type="text"] {
+            margin-bottom: 2rem;
+            margin-top: 2rem;
+            height: 4rem;
+        }
+
+        .form-signin input[type="password"] {
+            margin-bottom: 2rem;
+            height: 4rem;
+        }
+
+    </style>
+    <script src="js/scripts.js"></script>
+</head>
+<body class="text-center">
+<main class="form-signin">
+    <form action="#" method="post">
+        <img class="mb-5" src="assets/c9pay.png" alt="" width="160" height="80">
+
+        <div class="form-floating">
+            <input type="text" class="form-control" id="id" placeholder="ID">
+            <label for="id">ID</label>
+        </div>
+        <div class="form-floating">
+            <input type="password" class="form-control" id="password" placeholder="Password">
+            <label for="password">Password</label>
+        </div>
+
+        <button class="w-100 btn btn-lg btn-primary mb-5" type="submit">Login</button>
+        <p class="mt-5 mb-3 text-muted">Copyright &copy; 2023 전기 졸업과제 팀 클라우드나인</p>
+    </form>
+</main>
+</body>
+</html>
