@@ -58,8 +58,7 @@
           <li class="nav-item"><a class="nav-link" href="storeinfo.html">Store Service</a></li>
         </ul>
         <ul class="navbar-nav ms-auto">
-          <li class="nav-item"><button type="button" class="btn btn-outline-primary mx-1" onclick="location.href='login.html'">로그인</button></li>
-          <li class="nav-item"><button type="button" class="btn btn-primary mx-1" onclick="location.href='signup.html'">가입하기</button></li>
+          <li class="nav-item"><button type="button" class="btn btn-primary mx-1" onclick="logout()">로그아웃</button></li>
         </ul>
       </div>
     </div>
@@ -80,34 +79,34 @@
           <tbody>
             <tr>
               <th scope="row">ID</th>
-              <td>jaedoo</td>
+              <td id="userId"></td>
             </tr>
             <tr>
               <th scope="row">Name</th>
-              <td>송재원</td>
+              <td id="username"></td>
             </tr>
             <tr>
               <th scope="row">Email</th>
-              <td>fosong98@gmail.com</td>
+              <td id="email"></td>
             </tr>
             <tr>
               <th scope="row">Credit</th>
-              <td>10,000</td>
+              <td id="credit"></td>
             </tr>
           </tbody>
         </table>
       </div>
       <div class="button-box col-5 mx-5">
         <h3 class="mb-4">크레딧 충전</h3>
-        <button class="w-100 btn btn-lg btn-primary mb-2 rounded-pill " data-bs-toggle="modal" data-bs-target="#exampleModal">10,000</button>
-        <button class="w-100 btn btn-lg btn-outline-primary mb-2 rounded-pill " data-bs-toggle="modal" data-bs-target="#exampleModal">20,000</button>
-        <button class="w-100 btn btn-lg btn-primary mb-2 rounded-pill " data-bs-toggle="modal" data-bs-target="#exampleModal">50,000</button>
+        <button class="w-100 btn btn-lg btn-primary mb-2 rounded-pill " data-bs-toggle="modal" data-bs-target="#exampleModal" onclick="setToken(10000)">10,000</button>
+        <button class="w-100 btn btn-lg btn-outline-primary mb-2 rounded-pill " data-bs-toggle="modal" data-bs-target="#exampleModal" onclick="setToken(20000)">20,000</button>
+        <button class="w-100 btn btn-lg btn-primary mb-2 rounded-pill " data-bs-toggle="modal" data-bs-target="#exampleModal" onclick="setToken(50000)">50,000</button>
         <div class="row pe-auto">
           <div class="form-floating col-9">
-            <input type="number" class="form-control" id="credit">
+            <input type="number" class="form-control" id="creditInput">
             <label for="credit">직접입력</label>
           </div>
-          <button class="btn btn-outline-primary col-3" data-bs-toggle="modal" data-bs-target="#exampleModal">결제</button>
+          <button class="btn btn-outline-primary col-3" onclick="setTokenFromInput()">결제</button>
         </div>
       </div>
     </div>
@@ -127,7 +126,7 @@
           <div class="modal-footer">
             <!-- 결제하기 버튼 -->
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary" data-bs-dismiss="modal">결제완료</button>
+            <button type="button" class="btn btn-primary" onclick="charge()">결제완료</button>
           </div>
         </div>
       </div>
@@ -160,5 +159,86 @@
   // 이용약관 UI를 렌더링할 위치를 지정합니다. `#agreement`와 같은 CSS 선택자를 추가하세요.
   // https://docs.tosspayments.com/reference/widget-sdk#renderagreement선택자
   paymentWidget.renderAgreement('#agreement')
+</script>
+
+<script>
+  function logout() {
+    document.cookie = "Authorization=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    location.href = "index.html";
+  }
+
+  function getUserInfo() {
+    const baseUrl = "http://localhost:8083/user-service/api";
+
+    fetch(baseUrl + "/user", {
+      method: "GET",
+      credentials: "include"
+    }).then((response)=>setUserInfo(response));
+  }
+
+  function setUserInfo(response) {
+    if (response.status == 200) response.json().then((obj)=>setUserBox(obj))
+    else {
+      alert("토큰이 유효하지 않습니다.");
+      location.href = "index.html";
+    }
+  }
+
+  function setUserBox(obj) {
+    let username = document.getElementById("username");
+    let userId = document.getElementById("userId");
+    let email = document.getElementById("email");
+    let credit = document.getElementById("credit");
+
+    username.innerText = obj.username;
+    userId.innerText = obj.userId;
+    email.innerText = obj.email;
+    credit.innerText = obj.credit;
+  }
+
+  function setToken(credit) {
+    sessionStorage.setItem("credit", credit);
+  }
+
+  function setTokenFromInput() {
+     let credit = document.getElementById("creditInput").value;
+     if (credit <= 0) alert("충전할 크레딧 양을 입력해주세요.");
+     else {
+       sessionStorage.setItem("credit", credit);
+       var myModalEl = document.getElementById('exampleModal')
+       var modal = bootstrap.Modal.getInstance(myModalEl)
+       modal.show();
+     }
+  }
+
+  function charge() {
+    let credit = sessionStorage.getItem("credit");
+
+    const baseUrl = "http://localhost:8083/user-service/api";
+
+    let isCharged = (stat) => {
+      if (stat == 200) {
+        getUserInfo();
+        var myModalEl = document.getElementById('exampleModal')
+        var modal = bootstrap.Modal.getInstance(myModalEl)
+        document.getElementById("creditInput").value = "";
+        modal.hide();
+      }
+      else alert("충전에 실패했습니다.");
+    }
+
+    fetch(baseUrl + "/credit", {
+      method: "POST",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        "quantity": credit
+      })
+    }).then((response)=>isCharged(response.status))
+  }
+
+  window.addEventListener("load", getUserInfo, false);
 </script>
 </html>

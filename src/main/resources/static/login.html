@@ -29,17 +29,35 @@
 </body>
 <script>
     function login() {
-        const baseUrl = "http://api.teamcloudnine.link/user-service/api";
-        fetch(baseUrl + "/user/signup", {
+        const baseUrl = "http://localhost:8083/user-service/api";
+
+        const id = document.getElementById("id").value;
+        const password = document.getElementById("password").value;
+
+        let isLogin = (stat, json) => {
+            if (stat == 200) {
+                json.then((body)=>{
+                    document.cookie = "Authorization=" + body.token + "; path=/;";
+                    location.href="index.html";
+                });
+            } else {
+                alert("로그인 실패");
+            }
+        }
+
+        fetch(baseUrl + "/login", {
             method: "POST",
+            credentials: "same-origin",
             headers: {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({
-                "userId": "owner",
-                "password": "1234"
+                "userId": id,
+                "password": password
             })
-        }).then((response) => alert(response));
+        }).then((response)=>isLogin(response.status, response.json()))
+
+
     }
 </script>
 </html>
