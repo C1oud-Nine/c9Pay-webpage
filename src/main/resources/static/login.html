@@ -10,7 +10,7 @@
 </head>
 <body class="text-center py-5 h-100">
     <main class="form-signin m-auto my-5">
-        <a href="index.html"><img class="mb-3" src="assets/c9pay.png" alt="" width="100" height="50"></a>
+        <a href="index.html"><img class="mb-3" src="assets/c9Pay.png" alt="" width="100" height="50"></a>
 
         <div class="form-floating">
             <input type="text" class="form-control" id="id" placeholder="ID">
@@ -29,15 +29,17 @@
 </body>
 <script>
     function login() {
-        const baseUrl = "http://localhost:8083/user-service/api";
+        const baseUrl = "http://api.teamcloudnine.link/user-service/api";
 
         const id = document.getElementById("id").value;
         const password = document.getElementById("password").value;
 
         let isLogin = (stat, json) => {
-            if (stat == 200) {
+            if (stat === 200) {
                 json.then((body)=>{
-                    document.cookie = "Authorization=" + body.token + "; path=/;";
+
+                    document.cookie = "Authorization=" + body.token + "; path=/; domain=.teamcloudnine.link; ";
+
                     location.href="index.html";
                 });
             } else {

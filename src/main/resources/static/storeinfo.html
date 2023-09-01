@@ -27,7 +27,7 @@
                         <li class="nav-item"><a class="nav-link" href="userinfo.html">User Service</a></li>
                         <li class="nav-item"><a class="nav-link" href="storeinfo.html">Store Service</a></li>
                     </ul>
-                    <ul class="navbar-nav ms-auto">
+                        <ul class="navbar-nav ms-auto">
                         <li class="nav-item"><button type="button" class="btn btn-primary mx-1" onclick="logout()">로그아웃</button></li>
                     </ul>
                 </div>
@@ -86,7 +86,7 @@
         function createStore() {
             let storeName = document.getElementById("name").value;
 
-            const baseUrl = "http://localhost:8084/store-service/api";
+            const baseUrl = "http://api.teamcloudnine.link/store-service/api";
 
             fetch(baseUrl + "/store", {
                 method: "POST",
@@ -115,11 +115,11 @@
         }
 
         function logout() {
-            document.cookie = "Authorization=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-            location.href = "index.html";
+            document.cookie = "Authorization=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=.teamcloudnine.link;";
+            location.href = "index.html"
         }
         function getStoreInfo() {
-            const baseUrl = "http://localhost:8084/store-service/api";
+            const baseUrl = "http://api.teamcloudnine.link/store-service/api";
 
             fetch(baseUrl + "/store", {
                 method: "GET",

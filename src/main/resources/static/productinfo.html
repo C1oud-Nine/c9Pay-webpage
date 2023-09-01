@@ -113,11 +113,11 @@
 </body>
 <script>
     function logout() {
-        document.cookie = "Authorization=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-        location.href = "index.html";
+        document.cookie = "Authorization=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=.teamcloudnine.link;";
+        location.href = "index.html"
     }
     function getProductInfo() {
-        const baseUrl = "http://localhost:8084/store-service/api/";
+        const baseUrl = "http://api.teamcloudnine.link/store-service/api/";
 
         const storeId = sessionStorage.getItem("storeId");
         const storeName = sessionStorage.getItem("storeName");
@@ -181,7 +181,7 @@
 
     function deleteProduct(id) {
         const storeId = sessionStorage.getItem("storeId");
-        const url = "http://localhost:8084/store-service/api/" + storeId + "/product/" + id;
+        const url = "http://api.teamcloudnine.link/store-service/api/" + storeId + "/product/" + id;
 
         fetch(url, {
             method: "DELETE",
@@ -206,7 +206,7 @@
     function editProduct() {
         const storeId = sessionStorage.getItem("storeId");
         let id = sessionStorage.getItem("productId");
-        const url = "http://localhost:8084/store-service/api/" + storeId + "/product/" + id;
+        const url = "http://api.teamcloudnine.link/store-service/api/" + storeId + "/product/" + id;
 
         let name = document.getElementById("nameEdit").value;
         let price = document.getElementById("priceEdit").value;
@@ -237,7 +237,7 @@
     function addProduct() {
         const storeId = sessionStorage.getItem("storeId");
 
-        const url = "http://localhost:8084/store-service/api/" + storeId + "/product";
+        const url = "http://api.teamcloudnine.link/store-service/api/" + storeId + "/product";
 
 
         let name = document.getElementById("name").value;

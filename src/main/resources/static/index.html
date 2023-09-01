@@ -98,16 +98,15 @@
     </body>
     <script>
         function setButton() {
-            const baseUrl = "http://localhost:8083/user-service/api";
-
-            fetch(baseUrl + "/user", {
+            const baseUrl = "http://api.teamcloudnine.link/user-service/api/user";
+            fetch(baseUrl, {
                 method: "GET",
-                credentials: "include"
+                credentials: "include",
             }).then((response)=>hasToken(response.status));
         }
 
         function logout() {
-            document.cookie = "Authorization=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+            document.cookie = "Authorization=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=.teamcloudnine.link;";
             location.reload();
         }
 

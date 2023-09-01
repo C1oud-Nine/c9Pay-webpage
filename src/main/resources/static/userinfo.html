@@ -165,12 +165,12 @@
 
 <script>
   function logout() {
-    document.cookie = "Authorization=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-    location.href = "index.html";
+    document.cookie = "Authorization=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=.teamcloudnine.link;";
+    location.href = "index.html"
   }
 
   function getUserInfo() {
-    const baseUrl = "http://localhost:8083/user-service/api";
+    const baseUrl = "http://api.teamcloudnine.link/user-service/api";
 
     fetch(baseUrl + "/user", {
       method: "GET",
@@ -216,7 +216,7 @@
   function charge() {
     let credit = sessionStorage.getItem("credit");
 
-    const baseUrl = "http://localhost:8083/user-service/api";
+    const baseUrl = "http://api.teamcloudnine.link/user-service/api";
 
     let isCharged = (stat) => {
       if (stat == 200) {
