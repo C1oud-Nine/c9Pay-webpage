@@ -67,6 +67,10 @@
                             <input type="number" class="form-control" id="priceEdit" placeholder="Price">
                             <label for="priceEdit">금액</label>
                         </div>
+                        <div class="form-floating">
+                            <input type="number" class="form-control" id="imageUrlEdit" placeholder="Price">
+                            <label for="imageUrlEdit">이미지</label>
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -81,7 +85,7 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                        <h5 class="modal-title" id="exampleModalLabel">상품 추가</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
@@ -92,6 +96,10 @@
                         <div class="form-floating">
                             <input type="number" class="form-control" id="price" placeholder="Price">
                             <label for="price">금액</label>
+                        </div>
+                        <div class="form-floating">
+                            <input type="text" class="form-control" id="imageUrl" placeholder="Image">
+                            <label for="imageUrl">이미지</label>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -142,15 +150,16 @@
         let productList = document.getElementById("productList");
         productList.innerHTML = "";
         for (let i = 0; i < products.length; ++i) {
-            productList.append(makeProductBox(products[i].id, products[i].name, products[i].price))
+            productList.append(makeProductBox(products[i].id, products[i].name, products[i].price, products[i].imageUrl))
         }
     }
 
-    function makeProductBox(id, name, price) {
+    function makeProductBox(id, name, price, imageUrl) {
+        if (!imageUrl || imageUrl === "") imageUrl = "https://dummyimage.com/450x300/dee2e6/6c757d.jpg";
         const html = `<div class="col mb-5">
                     <div class="card h-100">
                         <!-- Product image-->
-                        <img class="card-img-top" src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" alt="..." />
+                        <img class="card-img-top" src="` + imageUrl + `" alt="..." />
                         <!-- Product details-->
                         <div class="card-body p-4">
                             <div class="text-center mb-2">
@@ -210,6 +219,7 @@
 
         let name = document.getElementById("nameEdit").value;
         let price = document.getElementById("priceEdit").value;
+        let imageUrl  = document.getElementById("imageUrlEdit").value;
 
         fetch(url, {
             method: "POST",
@@ -219,7 +229,8 @@
             },
             body: JSON.stringify({
                 "name": name,
-                "price": price
+                "price": price,
+                "imageUrl": imageUrl
             })
         }).then((response)=>{
             if (response.status === 200) {
@@ -242,6 +253,7 @@
 
         let name = document.getElementById("name").value;
         let price = document.getElementById("price").value;
+        let imageUrl = document.getElementById("imageUrl").value;
 
         fetch(url, {
             method: "POST",
@@ -251,7 +263,8 @@
             },
             body: JSON.stringify({
                 "name": name,
-                "price": price
+                "price": price,
+                "imageUrl": imageUrl
             })
         }).then((response)=>{
             if (response.status === 200) {

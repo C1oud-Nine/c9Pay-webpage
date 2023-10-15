@@ -63,6 +63,10 @@
                                 <input type="text" class="form-control" id="name" placeholder="Name">
                                 <label for="name">가게 이름을 입력하세요</label>
                             </div>
+                            <div class="form-floating m-3">
+                                <input type="text" class="form-control" id="imageUrl" placeholder="Name">
+                                <label for="imageUrl">가게 이미지를 입력하세요</label>
+                            </div>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -85,6 +89,7 @@
     <script>
         function createStore() {
             let storeName = document.getElementById("name").value;
+            let imageUrl = document.getElementById("imageUrl").value;
 
             const baseUrl = "http://api.teamcloudnine.link/store-service/api";
 
@@ -95,7 +100,8 @@
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify({
-                    'name': storeName
+                    'name': storeName,
+                    'imageUrl': imageUrl
                 })
             }).then((response) => {
                 if (response.status === 200) {
@@ -139,15 +145,18 @@
             let storeList = document.getElementById("storeList");
             storeList.innerHTML = "";
             for (let i = 0; i < stores.length; ++i) {
-                storeList.append(makeStoreBox(stores[i].id, stores[i].name))
+                storeList.append(makeStoreBox(stores[i].id, stores[i].name, stores[i].imageUrl))
             }
         }
 
-        function makeStoreBox(id, name) {
+        function makeStoreBox(id, name, imageUrl) {
+            if (!imageUrl || imageUrl === "") {
+                imageUrl = "https://dummyimage.com/450x300/dee2e6/6c757d.jpg";
+            }
             const html = `<div class="col mb-5">
                         <div class="card h-100">
                             <!-- Product image-->
-                            <img class="card-img-top" src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" alt="..." />
+                            <img class="card-img-top" src="`+ imageUrl + `" alt="..." />
                             <!-- Product details-->
                             <div class="card-body p-4">
                                 <div class="text-center">
